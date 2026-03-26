@@ -21,38 +21,50 @@ export default async function Home() {
           <p className="text-gray-500">Belum ada artikel yang dipublish.</p>
         ) : (
           <div className="space-y-6">
-            {posts.map((post) => (
-              <div key={post.id} className="bg-white rounded-lg shadow-sm p-6">
-                <Link href={`/blog/${post.slug}`}>
-                  <h2 className="text-xl font-semibold text-gray-800 hover:text-blue-600 transition">
-                    {post.title}
-                  </h2>
-                </Link>
-                {post.excerpt && (
-                  <p className="text-gray-500 mt-2 text-sm">{post.excerpt}</p>
-                )}
-                <div className="flex items-center justify-between mt-4">
-                  <span className="text-xs text-gray-400">
-                    {new Date(post.createdAt).toLocaleDateString("id-ID", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-xs text-blue-600 hover:underline"
-                  >
-                    Baca selengkapnya
+            {posts.map(
+              (post: {
+                id: string;
+                title: string;
+                slug: string;
+                excerpt: string | null;
+                createdAt: Date;
+                author: { name: string };
+              }) => (
+                <div
+                  key={post.id}
+                  className="bg-white rounded-lg shadow-sm p-6"
+                >
+                  <Link href={`/blog/${post.slug}`}>
+                    <h2 className="text-xl font-semibold text-gray-800 hover:text-blue-600 transition">
+                      {post.title}
+                    </h2>
                   </Link>
+                  {post.excerpt && (
+                    <p className="text-gray-500 mt-2 text-sm">{post.excerpt}</p>
+                  )}
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-xs text-gray-400">
+                      {new Date(post.createdAt).toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-xs text-blue-600 hover:underline"
+                    >
+                      Baca selengkapnya
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         )}
         <div className="mt-8 flex gap-4">
           <Link href="/blog" className="text-sm text-blue-600 hover:underline">
-            Lihat semua artikel
+            Lihat semua artikel & cari
           </Link>
           <span className="text-gray-300">|</span>
           <Link href="/admin" className="text-sm text-gray-500 hover:underline">
