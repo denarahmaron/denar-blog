@@ -58,7 +58,7 @@ export default async function Home() {
           </p>
 
           <div className="flex flex-wrap gap-2 mb-10">
-            {techStack.map((tech, i) => (
+            {techStack.map((tech) => (
               <span
                 key={tech}
                 className="px-4 py-2 bg-card/80 backdrop-blur-sm border border-border text-muted-foreground text-sm rounded-lg hover:border-primary/50 hover:text-foreground transition-all cursor-default"

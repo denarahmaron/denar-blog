@@ -15,15 +15,11 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const savedTheme = (localStorage.getItem("theme") || "dark") as "light" | "dark";
-    setTheme(savedTheme);
-    document.documentElement.classList.toggle("light", savedTheme === "light");
-  }, []);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "dark";
+    return (localStorage.getItem("theme") || "dark") as "light" | "dark";
+  });
+  const mounted = typeof window !== "undefined";
 
   useEffect(() => {
     const handleScroll = () => {
