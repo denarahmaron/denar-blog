@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const token =
     req.cookies.get("authjs.session-token") ??
     req.cookies.get("__Secure-authjs.session-token");
