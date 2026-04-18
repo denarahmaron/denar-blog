@@ -37,12 +37,18 @@ services:
       DATABASE_URL: postgresql://bloguser:blogpassword@postgres:5432/blogdb
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       NEXTAUTH_URL: ${NEXTAUTH_URL}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     depends_on:
       postgres:
         condition: service_healthy
       db-migrate:
         condition: service_completed_successfully
-    restart: unless-stopped
+    restart: always
 
 volumes:
   postgres_data:
