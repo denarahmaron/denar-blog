@@ -17,6 +17,17 @@ services:
       timeout: 5s
       retries: 5
 
+  db-migrate:
+    build: .
+    container_name: blog-db-migrate
+    entrypoint: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: postgresql://bloguser:blogpassword@postgres:5432/blogdb
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
   app:
     build: .
     container_name: blog-app
@@ -29,6 +40,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      db-migrate:
+        condition: service_completed_successfully
     restart: unless-stopped
 
 volumes:
