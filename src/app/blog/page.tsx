@@ -27,95 +27,93 @@ export default async function BlogPage({
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Blog</h1>
-          <Link
-            href="/admin"
-            className="text-sm text-gray-400 hover:text-gray-600"
+    <div className="max-w-5xl mx-auto px-6 py-16">
+      <section className="mb-12">
+        <h1 className="text-4xl font-bold text-foreground mb-4">Blog</h1>
+        <p className="text-muted-foreground">
+          Thoughts on DevOps, infrastructure, and system administration.
+        </p>
+      </section>
+
+      <form method="GET" action="/blog" className="mb-10">
+        <div className="flex gap-3 max-w-lg">
+          <input
+            name="q"
+            type="text"
+            defaultValue={query}
+            placeholder="Search articles..."
+            className="flex-1 px-4 py-2.5 bg-card border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+          />
+          <button
+            type="submit"
+            className="px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-colors"
           >
-            Admin
-          </Link>
-        </div>
-
-        <form method="GET" action="/blog" className="mb-8">
-          <div className="flex gap-2">
-            <input
-              name="q"
-              type="text"
-              defaultValue={query}
-              placeholder="Cari artikel..."
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition"
-            >
-              Cari
-            </button>
-            {query && (
-              <Link
-                href="/blog"
-                className="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-600 hover:bg-gray-50 transition"
-              >
-                Reset
-              </Link>
-            )}
-          </div>
+            Search
+          </button>
           {query && (
-            <p className="text-sm text-gray-500 mt-2">
-              {posts.length} hasil untuk &quot;{query}&quot;
-            </p>
+            <Link
+              href="/blog"
+              className="px-5 py-2.5 bg-secondary text-foreground rounded-xl font-medium hover:bg-border transition-colors"
+            >
+              Clear
+            </Link>
           )}
-        </form>
-
-        {posts.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-500">
-            {query
-              ? `Tidak ada artikel yang cocok dengan "${query}"`
-              : "Belum ada artikel."}
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {posts.map(
-              (post: {
-                id: string;
-                title: string;
-                slug: string;
-                excerpt: string | null;
-                createdAt: Date;
-                author: { name: string };
-              }) => (
-                <div
-                  key={post.id}
-                  className="bg-white rounded-lg shadow-sm p-6"
-                >
-                  <Link href={`/blog/${post.slug}`}>
-                    <h2 className="text-xl font-semibold text-gray-800 hover:text-blue-600 transition">
-                      {post.title}
-                    </h2>
-                  </Link>
-                  {post.excerpt && (
-                    <p className="text-gray-500 mt-2 text-sm">{post.excerpt}</p>
-                  )}
-                  <div className="flex gap-3 mt-4 text-xs text-gray-400">
-                    <span>{post.author.name}</span>
-                    <span>•</span>
-                    <span>
-                      {new Date(post.createdAt).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-                </div>
-              ),
-            )}
-          </div>
+        </div>
+        {query && (
+          <p className="text-sm text-muted-foreground mt-3">
+            {posts.length} results for &quot;{query}&quot;
+          </p>
         )}
-      </div>
+      </form>
+
+      {posts.length === 0 ? (
+        <div className="p-12 bg-card rounded-2xl border border-border text-center">
+          <p className="text-muted-foreground">
+            {query
+              ? `No articles found matching "${query}"`
+              : "No posts yet. Check back soon!"}
+          </p>
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-6">
+          {posts.map(
+            (post: {
+              id: string;
+              title: string;
+              slug: string;
+              excerpt: string | null;
+              createdAt: Date;
+              author: { name: string };
+            }) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className="group p-6 bg-card rounded-2xl border border-border hover:border-primary/50 transition-all duration-300"
+              >
+                <h2 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                  {post.title}
+                </h2>
+                {post.excerpt && (
+                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+                )}
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <span>{post.author.name}</span>
+                  <span>•</span>
+                  <span>
+                    {new Date(post.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </span>
+                </div>
+              </Link>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 }

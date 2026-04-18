@@ -2,96 +2,125 @@ import Link from "next/link";
 
 const projects = [
   {
-    title: "Homelab Infrastructure Server",
-    description: "Built a self-hosted infrastructure using Proxmox VE. Deployed services such as Nextcloud and AI-based assistant tools. Configured secure remote access via Tailscale VPN. Performed live service migration with zero data loss. Fully documented architecture and setup on GitHub.",
+    title: "Homelab Infrastructure",
+    description:
+      "Built a self-hosted infrastructure using Proxmox VE. Deployed services such as Nextcloud and AI-based assistant tools. Configured secure remote access via Tailscale VPN. Performed live service migration with zero data loss. Fully documented architecture and setup on GitHub.",
     tech: ["Proxmox VE", "Docker", "Nextcloud", "Tailscale", "Linux"],
     highlights: ["Zero data loss migration", "Secure remote access", "Self-hosted services"],
+    metric: "Self-hosted",
   },
   {
     title: "WordPress VPS Production",
-    description: "Maintained a production VPS environment with 99%+ uptime for over 3 years. Diagnosed and resolved critical server incidents with minimal downtime. Improved website performance (reduced load time by ~40%). Implemented Docker-based environments, security hardening practices, backup systems and CDN integration. Executed full server migration (shared hosting → VPS) with zero downtime.",
+    description:
+      "Maintained a production VPS environment with 99%+ uptime for over 3 years. Diagnosed and resolved critical server incidents. Improved website performance (reduced load time by ~40%). Implemented Docker-based environments, security hardening, backup systems and CDN integration. Executed full server migration with zero downtime.",
     tech: ["Linux", "Nginx", "PHP", "MySQL", "Docker", "Docker Compose", "Fail2ban", "UFW"],
-    highlights: ["99%+ uptime", "Zero-downtime migration", "40% performance improvement"],
+    highlights: ["99%+ uptime", "Zero-downtime migration", "40% faster"],
+    metric: "99%+ Uptime",
   },
   {
     title: "CI/CD Pipeline for Blog Deployment",
-    description: "Implemented automated build and deployment pipeline using GitHub Actions. Deploys to homelab server via Tailscale VPN and SSH. Includes lint checks, tests, Docker image build, and live reload.",
+    description:
+      "Implemented automated build and deployment pipeline using GitHub Actions. Deploys to homelab server via Tailscale VPN and SSH. Includes lint checks, tests, Docker image build, and live reload.",
     tech: ["GitHub Actions", "Docker", "Tailscale", "SSH", "PostgreSQL", "Prisma"],
-    highlights: ["Automated deployment", "Homelab hosting", "Full CI/CD workflow"],
+    highlights: ["Automated deployment", "Homelab hosting", "Full CI/CD"],
+    metric: "Full Automation",
   },
+];
+
+const homelabStack = [
+  { category: "Virtualization", items: ["Proxmox VE"] },
+  { category: "Container", items: ["Docker", "Docker Compose"] },
+  { category: "Storage", items: ["Nextcloud", "NFS"] },
+  { category: "Networking", items: ["Tailscale", "UFW"] },
+  { category: "Web Server", items: ["Nginx", "Caddy"] },
+  { category: "Database", items: ["PostgreSQL", "MySQL"] },
 ];
 
 export const metadata = {
   title: "Projects | Denar Ahmaron",
-  description: "Showcase of Denar Ahmaron's technical projects including homelab infrastructure and production deployments",
+  description: "Technical projects showcasing hands-on experience in DevOps, infrastructure, and system administration.",
 };
 
 export default function ProjectsPage() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">Projects</h1>
-      <p className="text-gray-600 mb-12">
-        A showcase of technical projects demonstrating hands-on experience in infrastructure, DevOps, and system administration.
-      </p>
+    <div className="max-w-5xl mx-auto px-6 py-16">
+      <section className="mb-16">
+        <h1 className="text-4xl font-bold text-foreground mb-4">Projects</h1>
+        <p className="text-muted-foreground max-w-xl">
+          A showcase of technical projects demonstrating hands-on production experience.
+          Each project reflects real-world challenges and solutions in infrastructure,
+          DevOps, and system administration.
+        </p>
+      </section>
 
-      <div className="space-y-12">
+      <section className="space-y-8 mb-20">
         {projects.map((project, index) => (
-          <section key={index} className="border-b border-gray-100 pb-12 last:border-0">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-3">{project.title}</h2>
-            <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
-            
+          <article
+            key={index}
+            className="p-6 sm:p-8 bg-card rounded-2xl border border-border hover:border-primary/30 transition-all duration-300"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+              <h2 className="text-2xl font-semibold text-foreground">
+                {project.title}
+              </h2>
+              <span className="text-sm px-3 py-1 bg-primary/10 text-primary rounded-full whitespace-nowrap">
+                {project.metric}
+              </span>
+            </div>
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              {project.description}
+            </p>
             <div className="flex flex-wrap gap-2 mb-4">
               {project.tech.map((tech) => (
-                <span key={tech} className="px-2.5 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">
+                <span
+                  key={tech}
+                  className="px-2.5 py-1 bg-secondary text-muted-foreground text-sm rounded"
+                >
                   {tech}
                 </span>
               ))}
             </div>
-
             <div className="flex flex-wrap gap-4">
               {project.highlights.map((highlight) => (
-                <div key={highlight} className="flex items-center gap-1.5 text-sm text-gray-500">
-                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                <div
+                  key={highlight}
+                  className="flex items-center gap-2 text-sm text-muted-foreground"
+                >
+                  <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                   {highlight}
                 </div>
               ))}
             </div>
-          </section>
+          </article>
         ))}
-      </div>
+      </section>
 
-      <div className="mt-12 pt-8 border-t border-gray-100">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Homelab Stack</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Virtualization</h3>
-            <p className="text-gray-500">Proxmox VE</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Container</h3>
-            <p className="text-gray-500">Docker, Docker Compose</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Storage</h3>
-            <p className="text-gray-500">Nextcloud, NFS</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Networking</h3>
-            <p className="text-gray-500">Tailscale, UFW</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Web Server</h3>
-            <p className="text-gray-500">Nginx, Caddy</p>
-          </div>
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="font-medium text-gray-900">Database</h3>
-            <p className="text-gray-500">PostgreSQL, MySQL</p>
-          </div>
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold text-foreground mb-6">
+          Homelab Stack
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {homelabStack.map((item) => (
+            <div
+              key={item.category}
+              className="p-4 bg-card rounded-xl border border-border"
+            >
+              <h3 className="font-medium text-foreground mb-2">
+                {item.category}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {item.items.join(", ")}
+              </p>
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
 
-      <div className="mt-8">
-        <Link href="/" className="text-gray-600 hover:text-gray-900 transition">
+      <div className="pt-8 border-t border-border">
+        <Link
+          href="/"
+          className="text-muted-foreground hover:text-primary transition-colors"
+        >
           ← Back to Home
         </Link>
       </div>

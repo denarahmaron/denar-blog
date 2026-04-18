@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -18,34 +19,32 @@ export default async function PostPage({
   if (!post) notFound();
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-3xl mx-auto">
-        <Link
-          href="/blog"
-          className="text-sm text-blue-600 hover:underline mb-6 inline-block"
-        >
-          Kembali ke Blog
-        </Link>
-        <article className="bg-white rounded-lg shadow-sm p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {post.title}
-          </h1>
-          <div className="flex gap-3 text-sm text-gray-400 mb-8 pb-6 border-b">
-            <span>{post.author.name}</span>
-            <span>•</span>
-            <span>
-              {new Date(post.createdAt).toLocaleDateString("id-ID", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </span>
-          </div>
-          <div className="prose max-w-none text-gray-700 whitespace-pre-wrap leading-relaxed">
-            {post.content}
-          </div>
-        </article>
-      </div>
+    <div className="max-w-3xl mx-auto px-6 py-16">
+      <Link
+        href="/blog"
+        className="text-sm text-muted-foreground hover:text-primary transition-colors mb-8 inline-block"
+      >
+        ← Back to Blog
+      </Link>
+      <article className="bg-card rounded-2xl border border-border p-8">
+        <h1 className="text-3xl font-bold text-foreground mb-4">
+          {post.title}
+        </h1>
+        <div className="flex items-center gap-3 text-sm text-muted-foreground mb-8 pb-8 border-b border-border">
+          <span>{post.author.name}</span>
+          <span>•</span>
+          <span>
+            {new Date(post.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </span>
+        </div>
+        <div className="prose prose-invert max-w-none text-muted-foreground whitespace-pre-wrap leading-relaxed">
+          {post.content}
+        </div>
+      </article>
     </div>
   );
 }

@@ -1,121 +1,127 @@
-export const dynamic = "force-dynamic";
+"use client";
 
 import Link from "next/link";
 
-export const metadata = {
-  title: "About | Denar Ahmaron",
-  description: "Learn more about Denar Ahmaron's journey as a Junior DevOps Engineer",
+const experience = [
+  {
+    title: "WordPress Developer / Linux System Administrator",
+    organization: "Freelance",
+    period: "Present",
+    highlights: [
+      "Maintained production VPS with 99%+ uptime for 3+ years",
+      "Reduced website load time by ~40% through performance optimization",
+      "Executed zero-downtime migration (shared hosting → VPS)",
+      "Implemented Docker, security hardening, backups & CDN",
+    ],
+  },
+  {
+    title: "Operational & Administrative Staff",
+    organization: "Telkom Akses",
+    period: "2020 - 2023",
+    highlights: [
+      "Managed 50+ monthly work orders across vendor teams",
+      "Coordinated with 5+ vendors and 15+ field technicians",
+      "Prepared and validated project budgets and reports",
+      "Created network schematics using Visio and KML",
+    ],
+  },
+];
+
+const education = {
+  degree: "Bachelor's Degree in Informatics Engineering",
+  school: "University",
+  details: "GPA: 3.32 • Published research in Computer Vision (SINTA 4)",
+  thesis: "Object Detection Optimization using YOLOv8",
 };
+
+const usp = [
+  "8+ years of real-world operational experience",
+  "Hands-on production system ownership",
+  "Built and maintained personal homelab infrastructure",
+  "Strong understanding from network to application layer",
+  "Exposure to AI/ML (YOLOv8, Computer Vision research)",
+];
 
 export default function AboutPage() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-16">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">About Me</h1>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Professional Profile</h2>
-        <div className="prose prose-gray text-gray-600 leading-relaxed">
-          <p className="mb-4">
-            Denar is an IT Support, System Administrator, and Junior DevOps Engineer with over 8 years of experience in IT operations and infrastructure management, evolving from field-level network operations into server, cloud, and automation environments.
-          </p>
-          <p>
-            He brings a strong combination of real-world operational experience and hands-on technical expertise in infrastructure and DevOps.
-          </p>
-        </div>
+    <div className="max-w-5xl mx-auto px-6 py-16">
+      <section className="mb-16">
+        <h1 className="text-4xl font-bold text-foreground mb-4">About Me</h1>
+        <p className="text-muted-foreground max-w-xl text-lg leading-relaxed">
+          From field-level network operations to managing production servers —
+          I bring real-world operational experience and hands-on technical expertise
+          in infrastructure and DevOps.
+        </p>
       </section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Core Expertise</h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">💻 Infrastructure & System Administration</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Linux server management (Ubuntu/Debian) in production environments</li>
-              <li>VPS deployment and zero-downtime migration</li>
-              <li>Web server stack: Nginx, Apache, MySQL, PHP</li>
-              <li>Performance tuning and incident troubleshooting (CPU, memory, disk issues)</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">⚙️ DevOps & Automation</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Docker & Docker Compose (containerization)</li>
-              <li>Proxmox VE (virtualization & homelab infrastructure)</li>
-              <li>Basic CI/CD pipeline implementation</li>
-              <li>Environment standardization and deployment workflows</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">🌐 Networking & Security</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>TCP/IP, DNS, DHCP, SSH, VPN (Tailscale)</li>
-              <li>Firewall configuration (UFW) and security hardening (Fail2ban, SSH key auth)</li>
-              <li>Secure remote infrastructure access</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">🧩 IT Support & Operations</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>L1/L2 technical support and troubleshooting</li>
-              <li>Incident response and resolution in production environments</li>
-              <li>Ticketing systems and operational workflows</li>
-              <li>Cross-functional coordination with technical and non-technical teams</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Professional Experience</h2>
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold text-foreground mb-6">Experience</h2>
         <div className="space-y-8">
-          <div className="border-l-2 border-gray-900 pl-4">
-            <h3 className="text-lg font-medium text-gray-900">WordPress Developer / Linux System Administrator</h3>
-            <p className="text-gray-500 text-sm mb-2">Freelance</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Maintained a production VPS environment with 99%+ uptime for over 3 years</li>
-              <li>Diagnosed and resolved critical server incidents with minimal downtime</li>
-              <li>Improved website performance (reduced load time by ~40%)</li>
-              <li>Implemented Docker-based environments, security hardening practices, backup systems and CDN integration</li>
-              <li>Executed full server migration (shared hosting → VPS) with zero downtime</li>
-            </ul>
-          </div>
-          <div className="border-l-2 border-gray-300 pl-4">
-            <h3 className="text-lg font-medium text-gray-900">Operational & Administrative Staff</h3>
-            <p className="text-gray-500 text-sm mb-2">Telkom Akses</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
-              <li>Managed 50+ monthly work orders across multiple vendor teams</li>
-              <li>Coordinated with 5+ vendors and 15+ field technicians</li>
-              <li>Prepared and validated project budgets (RAB) and reports</li>
-              <li>Created network schematics using Visio and KML</li>
-              <li>Ensured data integrity in operational systems</li>
-            </ul>
-          </div>
+          {experience.map((job, index) => (
+            <div
+              key={index}
+              className="relative pl-8 border-l-2 border-border before:absolute before:left-[-9px] before:top-0 before:w-4 before:h-4 before:rounded-full before:bg-primary before:border-2 before:border-background"
+            >
+              <h3 className="text-xl font-semibold text-foreground">
+                {job.title}
+              </h3>
+              <p className="text-primary text-sm mb-2">
+                {job.organization} • {job.period}
+              </p>
+              <ul className="space-y-2">
+                {job.highlights.map((highlight) => (
+                  <li
+                    key={highlight}
+                    className="text-muted-foreground text-sm flex items-start gap-2"
+                  >
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Education</h2>
-        <div className="border-l-2 border-gray-900 pl-4">
-          <h3 className="text-lg font-medium text-gray-900">Bachelor&apos;s Degree in Informatics Engineering</h3>
-          <p className="text-gray-500 text-sm mb-2">GPA: 3.32</p>
-          <p className="text-gray-600 text-sm mb-2">Published research in Computer Vision (SINTA 4 Journal)</p>
-          <p className="text-gray-500 text-sm">Thesis: Object Detection Optimization using YOLOv8</p>
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold text-foreground mb-6">Education</h2>
+        <div className="p-6 bg-card rounded-2xl border border-border">
+          <h3 className="text-xl font-semibold text-foreground mb-2">
+            {education.degree}
+          </h3>
+          <p className="text-primary text-sm mb-2">{education.school}</p>
+          <p className="text-muted-foreground text-sm mb-1">
+            {education.details}
+          </p>
+          <p className="text-muted-foreground text-sm">
+            Thesis: {education.thesis}
+          </p>
         </div>
       </section>
 
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Unique Selling Points</h2>
-        <ul className="list-disc list-inside text-gray-600 space-y-2">
-          <li>8+ years of real-world operational experience</li>
-          <li>Hands-on production system ownership (not just projects)</li>
-          <li>Built and maintained a personal homelab infrastructure</li>
-          <li>Strong understanding from network layer to application layer</li>
-          <li>Exposure to AI/ML (YOLOv8, Computer Vision research)</li>
-        </ul>
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold text-foreground mb-6">
+          What Makes Me Different
+        </h2>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {usp.map((item) => (
+            <div
+              key={item}
+              className="p-4 bg-card rounded-xl border border-border flex items-center gap-3"
+            >
+              <span className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
+              <span className="text-foreground text-sm">{item}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
-      <div className="mt-12 pt-8 border-t border-gray-100">
-        <Link href="/" className="text-gray-600 hover:text-gray-900 transition">
+      <div className="pt-8 border-t border-border">
+        <Link
+          href="/"
+          className="text-muted-foreground hover:text-primary transition-colors"
+        >
           ← Back to Home
         </Link>
       </div>
