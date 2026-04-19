@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
+import CommentSection from "@/components/CommentSection";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -136,6 +137,8 @@ const post = await prisma.post.findUnique({
           </div>
         </section>
       )}
+
+      <CommentSection postId={post.id} />
     </div>
   );
 }

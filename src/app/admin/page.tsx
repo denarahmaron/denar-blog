@@ -51,6 +51,15 @@ export default async function AdminPage() {
             </h2>
             <p className="text-sm text-gray-500">Edit atau hapus artikel</p>
           </a>
+          <a
+            href="/admin/comments"
+            className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition"
+          >
+            <h2 className="text-lg font-semibold text-gray-700 mb-1">
+              Kelola Komentar
+            </h2>
+            <p className="text-sm text-gray-500">Approve atau hapus komentar</p>
+          </a>
         </div>
       </div>
     </div>
