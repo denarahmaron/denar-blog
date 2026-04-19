@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
+import TiptapEditor from "@/components/TiptapEditor";
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function EditPostPage() {
         excerpt: data.excerpt || "",
         coverImage: data.coverImage || "",
         categoryId: data.categoryId || "",
-        content: data.content,
+        content: data.content || "",
         published: data.published,
       });
       setCategories(cats);
@@ -166,13 +167,7 @@ export default function EditPostPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Konten
             </label>
-            <textarea
-              required
-              rows={12}
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
-            />
+            <TiptapEditor content={form.content} onChange={(content) => setForm({ ...form, content })} placeholder="Tulis konten artikel di sini..." />
           </div>
 
           <div className="flex items-center gap-2">

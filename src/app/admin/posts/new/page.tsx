@@ -1,46 +1,49 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import TiptapEditor from "@/components/TiptapEditor";
 
 export default function NewPostPage() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [categories, setCategories] = useState([])
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     fetch("/api/categories")
       .then(res => res.json())
       .then(data => setCategories(data))
-      .catch(() => setCategories([]))
-  }, [])
+      .catch(() => setCategories([]));
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-    const formData = new FormData(e.currentTarget)
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: formData.get("title"),
-        content: formData.get("content"),
+        content: content,
         excerpt: formData.get("excerpt"),
         coverImage: formData.get("coverImage"),
         categoryId: formData.get("categoryId") || null,
         published: formData.get("published") === "on",
       }),
-    })
+    });
     if (!res.ok) {
-      const data = await res.json()
-      setError(data.error || "Gagal menyimpan post")
-      setLoading(false)
-      return
+      const data = await res.json();
+      setError(data.error || "Gagal menyimpan post");
+      setLoading(false);
+      return;
     }
-    router.push("/admin/posts")
-    router.refresh()
+    router.push("/admin/posts");
+    router.refresh();
   }
 
   return (
@@ -76,7 +79,7 @@ export default function NewPostPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Konten</label>
-            <textarea name="content" required rows={12} className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" placeholder="Tulis konten artikel di sini..." />
+            <TiptapEditor content={content} onChange={setContent} placeholder="Tulis konten artikel di sini..." />
           </div>
           <div className="flex items-center gap-2">
             <input name="published" type="checkbox" id="published" className="rounded" />
@@ -89,5 +92,5 @@ export default function NewPostPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
