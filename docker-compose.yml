@@ -20,7 +20,7 @@ services:
   db-migrate:
     build: .
     container_name: blog-db-migrate
-    entrypoint: ["npx", "prisma", "migrate", "deploy"]
+    command: ["sh", "-c", "echo 'Starting migration...' && npx prisma migrate deploy && echo 'Migration completed successfully'"]
     environment:
       DATABASE_URL: postgresql://bloguser:blogpassword@postgres:5432/blogdb
     depends_on:
