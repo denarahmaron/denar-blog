@@ -8,5 +8,8 @@ else
   echo "Migration failed, but continuing anyway..."
 fi
 
+echo "Running database seed..."
+npx tsx prisma/seed.ts
+
 echo "Starting application..."
 exec node server.js
