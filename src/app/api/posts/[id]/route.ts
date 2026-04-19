@@ -10,7 +10,10 @@ export async function GET(
     const { id } = await params
     const post = await prisma.post.findUnique({
       where: { id },
-      include: { author: { select: { name: true } } },
+      include: { 
+        author: { select: { name: true } },
+        category: true,
+      },
     })
     if (!post) return NextResponse.json({ error: "Post tidak ditemukan" }, { status: 404 })
     return NextResponse.json(post)
@@ -28,7 +31,7 @@ export async function PUT(
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const { id } = await params
-    const { title, content, excerpt, coverImage, published } = await req.json()
+    const { title, content, excerpt, coverImage, categoryId, published } = await req.json()
 
     const slug = title
       .toLowerCase()
@@ -38,7 +41,7 @@ export async function PUT(
 
     const post = await prisma.post.update({
       where: { id },
-      data: { title, slug, content, excerpt, coverImage, published },
+      data: { title, slug, content, excerpt, coverImage, categoryId, published },
     })
 
     return NextResponse.json(post)

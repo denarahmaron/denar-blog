@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { title, content, excerpt, coverImage, published } = await req.json();
+    const { title, content, excerpt, coverImage, categoryId, published } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json(
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         content,
         excerpt: excerpt || "",
         coverImage: coverImage || null,
+        categoryId: categoryId || null,
         published: published || false,
         authorId: session.user!.id!,
       },

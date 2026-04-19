@@ -42,12 +42,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
+const post = await prisma.post.findUnique({
     where: { slug, published: true },
-    include: { author: { select: { name: true } } },
+    include: { 
+      author: { select: { name: true } },
+      category: true,
+    },
   });
 
   if (!post) notFound();
+
+  const relatedPosts = await prisma.post.findMany({
+    where: {
+      published: true,
+      id: { not: post.id },
+      ...(post.categoryId && {
+        categoryId: post.categoryId,
+      }),
+    },
+    take: 3,
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
@@ -74,6 +89,17 @@ export default async function PostPage({ params }: Props) {
             {post.title}
           </h1>
           <div className="flex items-center gap-3 text-sm text-muted-foreground mb-8 pb-8 border-b border-border">
+            {post.category && (
+              <>
+                <Link 
+                  href={`/blog?category=${post.category.slug}`}
+                  className="text-primary hover:underline"
+                >
+                  {post.category.name}
+                </Link>
+                <span>•</span>
+              </>
+            )}
             <span>{post.author.name}</span>
             <span>•</span>
             <span>{calculateReadingTime(post.content)} min read</span>
@@ -91,6 +117,25 @@ export default async function PostPage({ params }: Props) {
           </div>
         </div>
       </article>
+
+      {relatedPosts.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold text-foreground mb-6">Related Posts</h2>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {relatedPosts.map((related) => (
+              <Link
+                key={related.id}
+                href={`/blog/${related.slug}`}
+                className="p-4 bg-card rounded-xl border border-border hover:border-primary/50 transition-colors"
+              >
+                <h3 className="font-medium text-foreground text-sm line-clamp-2">
+                  {related.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

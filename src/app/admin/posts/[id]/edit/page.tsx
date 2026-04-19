@@ -11,27 +11,32 @@ export default function EditPostPage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState([])
   const [form, setForm] = useState({
     title: "",
     excerpt: "",
     coverImage: "",
+    categoryId: "",
     content: "",
     published: false,
   });
 
   useEffect(() => {
-    fetch(`/api/posts/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setForm({
-          title: data.title,
-          excerpt: data.excerpt || "",
-          coverImage: data.coverImage || "",
-          content: data.content,
-          published: data.published,
-        });
-        setFetching(false);
+    Promise.all([
+      fetch(`/api/posts/${id}`).then(res => res.json()),
+      fetch("/api/categories").then(res => res.json()).catch(() => [])
+    ]).then(([data, cats]) => {
+      setForm({
+        title: data.title,
+        excerpt: data.excerpt || "",
+        coverImage: data.coverImage || "",
+        categoryId: data.categoryId || "",
+        content: data.content,
+        published: data.published,
       });
+      setCategories(cats);
+      setFetching(false);
+    });
   }, [id]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -139,6 +144,22 @@ export default function EditPostPage() {
               onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kategori
+            </label>
+            <select
+              value={form.categoryId}
+              onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Pilih kategori...</option>
+              {categories.map((cat: { id: string; name: string }) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
           </div>
 
           <div>

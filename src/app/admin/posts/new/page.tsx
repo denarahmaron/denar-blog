@@ -1,12 +1,20 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 export default function NewPostPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then(res => res.json())
+      .then(data => setCategories(data))
+      .catch(() => setCategories([]))
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -21,6 +29,7 @@ export default function NewPostPage() {
         content: formData.get("content"),
         excerpt: formData.get("excerpt"),
         coverImage: formData.get("coverImage"),
+        categoryId: formData.get("categoryId") || null,
         published: formData.get("published") === "on",
       }),
     })
@@ -55,6 +64,15 @@ export default function NewPostPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Cover Image URL</label>
             <input name="coverImage" type="url" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/image.jpg" />
             <p className="text-xs text-gray-500 mt-1">URL gambar untuk thumbnail</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+            <select name="categoryId" className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Pilih kategori...</option>
+              {categories.map((cat: { id: string; name: string }) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Konten</label>

@@ -20,6 +20,23 @@ async function main() {
   })
 
   console.log("Seeded user:", user.email)
+
+  const categories = [
+    { name: "DevOps", slug: "devops" },
+    { name: "Infrastructure", slug: "infrastructure" },
+    { name: "Automation", slug: "automation" },
+    { name: "Security", slug: "security" },
+  ]
+
+  for (const cat of categories) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: cat,
+    })
+  }
+
+  console.log("Seeded categories")
 }
 
 main()

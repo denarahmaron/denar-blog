@@ -8,25 +8,36 @@ import Image from "next/image";
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; category?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, category } = await searchParams;
   const query = q || "";
 
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-      ...(query && {
-        OR: [
-          { title: { contains: query, mode: "insensitive" } },
-          { content: { contains: query, mode: "insensitive" } },
-          { excerpt: { contains: query, mode: "insensitive" } },
-        ],
-      }),
-    },
-    orderBy: { createdAt: "desc" },
-    include: { author: { select: { name: true } } },
-  });
+  const [posts, categories] = await Promise.all([
+    prisma.post.findMany({
+      where: {
+        published: true,
+        ...(query && {
+          OR: [
+            { title: { contains: query, mode: "insensitive" } },
+            { content: { contains: query, mode: "insensitive" } },
+            { excerpt: { contains: query, mode: "insensitive" } },
+          ],
+        }),
+        ...(category && {
+          category: { slug: category },
+        }),
+      },
+      orderBy: { createdAt: "desc" },
+      include: { 
+        author: { select: { name: true } },
+        category: { select: { name: true, slug: true } },
+      },
+    }),
+    prisma.category.findMany({
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
@@ -37,7 +48,34 @@ export default async function BlogPage({
         </p>
       </section>
 
+      <div className="flex flex-wrap gap-2 mb-8">
+        <Link
+          href="/blog"
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            !category
+              ? "bg-primary text-primary-foreground"
+              : "bg-secondary text-foreground hover:bg-border"
+          }`}
+        >
+          All
+        </Link>
+        {categories.map((cat) => (
+          <Link
+            key={cat.id}
+            href={`/blog?category=${cat.slug}`}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              category === cat.slug
+                ? "bg-primary text-primary-foreground"
+                : "bg-secondary text-foreground hover:bg-border"
+            }`}
+          >
+            {cat.name}
+          </Link>
+        ))}
+      </div>
+
       <form method="GET" action="/blog" className="mb-10">
+        <input type="hidden" name="category" value={category} />
         <div className="flex gap-3 max-w-lg">
           <input
             name="q"
@@ -54,7 +92,7 @@ export default async function BlogPage({
           </button>
           {query && (
             <Link
-              href="/blog"
+              href={category ? `/blog?category=${category}` : "/blog"}
               className="px-5 py-2.5 bg-secondary text-foreground rounded-xl font-medium hover:bg-border transition-colors"
             >
               Clear
@@ -88,6 +126,7 @@ export default async function BlogPage({
               content: string;
               createdAt: Date;
               author: { name: string };
+              category: { name: string; slug: string } | null;
             }) => (
               <Link
                 key={post.id}
@@ -114,6 +153,12 @@ export default async function BlogPage({
                     </p>
                   )}
                   <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    {post.category && (
+                      <>
+                        <span className="text-primary">{post.category.name}</span>
+                        <span>•</span>
+                      </>
+                    )}
                     <span>{post.author.name}</span>
                     <span>•</span>
                     <span>{calculateReadingTime(post.content)} min read</span>
