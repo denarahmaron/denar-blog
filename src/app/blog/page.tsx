@@ -124,6 +124,7 @@ export default async function BlogPage({
               excerpt: string | null;
               coverImage: string | null;
               content: string;
+              viewCount: number;
               createdAt: Date;
               author: { name: string };
               category: { name: string; slug: string } | null;
@@ -162,6 +163,8 @@ export default async function BlogPage({
                     <span>{post.author.name}</span>
                     <span>•</span>
                     <span>{calculateReadingTime(post.content)} min read</span>
+                    <span>•</span>
+                    <span>{post.viewCount.toLocaleString()} views</span>
                     <span>•</span>
                     <span>
                       {new Date(post.createdAt).toLocaleDateString("en-US", {

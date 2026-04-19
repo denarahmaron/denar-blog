@@ -7,6 +7,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import CommentSection from "@/components/CommentSection";
+import ViewCounter from "@/components/ViewCounter";
+import ShareButtons from "@/components/ShareButtons";
+import MarkdownContent from "@/components/MarkdownContent";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -113,9 +116,11 @@ const post = await prisma.post.findUnique({
               })}
             </span>
           </div>
-          <div className="prose prose-invert max-w-none text-muted-foreground whitespace-pre-wrap leading-relaxed">
-            {post.content}
+          <div className="flex items-center justify-between mb-8 pb-8 border-b border-border">
+            <ViewCounter postId={post.id} initialCount={post.viewCount} />
+            <ShareButtons title={post.title} />
           </div>
+          <MarkdownContent content={post.content} />
         </div>
       </article>
 

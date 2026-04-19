@@ -60,6 +60,15 @@ export default async function AdminPage() {
             </h2>
             <p className="text-sm text-gray-500">Approve atau hapus komentar</p>
           </a>
+          <a
+            href="/admin/analytics"
+            className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition"
+          >
+            <h2 className="text-lg font-semibold text-gray-700 mb-1">
+              Analytics
+            </h2>
+            <p className="text-sm text-gray-500">Lihat statistik blog</p>
+          </a>
         </div>
       </div>
     </div>
