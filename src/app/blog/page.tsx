@@ -1,7 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
+import { calculateReadingTime } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function BlogPage({
   searchParams,
@@ -82,32 +84,48 @@ export default async function BlogPage({
               title: string;
               slug: string;
               excerpt: string | null;
+              coverImage: string | null;
+              content: string;
               createdAt: Date;
               author: { name: string };
             }) => (
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="group p-6 bg-card rounded-2xl border border-border hover:border-primary/50 transition-all duration-300"
+                className="group bg-card rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 overflow-hidden"
               >
-                <h2 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {post.title}
-                </h2>
-                {post.excerpt && (
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                    {post.excerpt}
-                  </p>
+                {post.coverImage && (
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
                 )}
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>{post.author.name}</span>
-                  <span>•</span>
-                  <span>
-                    {new Date(post.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
+                <div className="p-6">
+                  <h2 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h2>
+                  {post.excerpt && (
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span>{post.author.name}</span>
+                    <span>•</span>
+                    <span>{calculateReadingTime(post.content)} min read</span>
+                    <span>•</span>
+                    <span>
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
                 </div>
               </Link>
             )

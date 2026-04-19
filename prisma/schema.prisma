@@ -21,6 +21,7 @@ model Post {
   slug        String   @unique
   content     String
   excerpt     String?
+  coverImage  String?
   published   Boolean  @default(false)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String

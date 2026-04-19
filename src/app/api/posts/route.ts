@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { generateSlug } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -8,7 +9,7 @@ export async function POST(req: NextRequest) {
     if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { title, content, excerpt, published } = await req.json();
+    const { title, content, excerpt, coverImage, published } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json(
@@ -17,11 +18,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .trim();
+    let slug = generateSlug(title);
+
+    const existingPost = await prisma.post.findUnique({ where: { slug } });
+    if (existingPost) {
+      slug = `${slug}-${Date.now()}`;
+    }
 
     const post = await prisma.post.create({
       data: {
@@ -29,6 +31,7 @@ export async function POST(req: NextRequest) {
         slug,
         content,
         excerpt: excerpt || "",
+        coverImage: coverImage || null,
         published: published || false,
         authorId: session.user!.id!,
       },

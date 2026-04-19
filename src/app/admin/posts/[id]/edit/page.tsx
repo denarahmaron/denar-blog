@@ -14,6 +14,7 @@ export default function EditPostPage() {
   const [form, setForm] = useState({
     title: "",
     excerpt: "",
+    coverImage: "",
     content: "",
     published: false,
   });
@@ -25,6 +26,7 @@ export default function EditPostPage() {
         setForm({
           title: data.title,
           excerpt: data.excerpt || "",
+          coverImage: data.coverImage || "",
           content: data.content,
           published: data.published,
         });
@@ -123,6 +125,18 @@ export default function EditPostPage() {
               type="text"
               value={form.excerpt}
               onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Cover Image URL
+            </label>
+            <input
+              type="url"
+              value={form.coverImage}
+              onChange={(e) => setForm({ ...form, coverImage: e.target.value })}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
