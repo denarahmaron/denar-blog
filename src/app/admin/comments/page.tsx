@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function AdminCommentsPage() {
   const session = await auth();
@@ -21,12 +22,14 @@ export default async function AdminCommentsPage() {
       where: { id },
       data: { approved: true },
     });
+    revalidatePath("/admin/comments");
   }
 
   async function deleteComment(formData: FormData) {
     "use server";
     const id = formData.get("id") as string;
     await prisma.comment.delete({ where: { id } });
+    revalidatePath("/admin/comments");
   }
 
   return (
